@@ -3,6 +3,7 @@ module.exports = function (app, router, db){
 	var mongoose = require('mongoose');
 	var newUser = User();
 
+	//Seed
 	router.get('/user/seed', function(req, res){
 		console.log('POST: Seeding users');
 

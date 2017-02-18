@@ -5,6 +5,14 @@ var router = express.Router();
 var mongoose = require('mongoose');
 var bodyParser = require('body-parser');
 
+//Run the server with sockets
+var io = require('socket.io').listen(
+	app.listen(port, function(req, res){
+	console.log('Listening on port ' + port);
+	})
+	
+);
+
 //Express
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true}));
@@ -18,10 +26,12 @@ var db = require('./dal/main')(mongoose);
 //Routes
 app.use('/api/', router);
 
+//Static files
+app.use('/static/', express.static('public'));
+
 //Webservices
 require('./services/user-service')(app, router, db);
 require('./services/authentication-service')(app, router, db);
 
-app.listen(port, function(req, res){
-	console.log('Listening on port ' + port);
-});
+//Chat
+require('./websockets/socketio-chat')(app, io);
